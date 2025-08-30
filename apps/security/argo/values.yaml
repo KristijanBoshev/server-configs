@@ -6,6 +6,7 @@ server:
     enabled: true
     ingressClassName: traefik
     hostname: "argo.valuxa.shop"
+    path: /
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
