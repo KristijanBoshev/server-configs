@@ -7,7 +7,6 @@ server:
     ingressClassName: traefik
     hostname: "argo.valuxa.shop"
     annotations:
-      # These annotations configure Traefik for HTTPS with Let's Encrypt
       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     tls: true
@@ -15,5 +14,3 @@ server:
 configs:
   params:
     server.insecure: true
-
-
