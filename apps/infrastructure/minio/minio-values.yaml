@@ -1,0 +1,40 @@
+mode: standalone
+
+persistence:
+  size: 10Gi
+
+resources:
+  requests:
+    memory: 1Gi
+
+rootUser: "minioadmin"
+rootPassword: "minioadmin123"
+
+service:
+  type: ClusterIP
+
+# API Ingress
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    traefik.ingress.kubernetes.io/service.scheme: http
+  path: /
+  hosts:
+    - api.storage.valuxa.shop
+
+# Console / UI Ingress
+consoleIngress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    traefik.ingress.kubernetes.io/service.scheme: http
+  path: /
+  hosts:
+    - storage.valuxa.shop

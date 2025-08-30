@@ -1,0 +1,27 @@
+authentik:
+  secret_key: "aWf/m2U+XTLY68R9I86U76OpejjVb2oHBwmKX1quj2MjbMvFlfd4eSEtsV9qdcXihafQT7TMPgRi17oA"
+  error_reporting:
+    enabled: true
+  postgresql:
+    host: app-db-rw.default.svc.cluster.local
+    port: 5432
+    user: appuser
+    password: 'pup8XY9[V7kA'
+    database: authentik
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik  # This tells it to use your Traefik setup
+    hosts:
+      - auth.valuxa.shop
+    annotations:
+      # These annotations tell Traefik to use HTTPS with Let's Encrypt
+      traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+
+postgresql:
+  enabled: false
+
+redis:
+  enabled: true

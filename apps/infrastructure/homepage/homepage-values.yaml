@@ -1,0 +1,15 @@
+ingress:
+  enabled: true
+  ingressClassName: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+  hosts:
+    - host: dashboard.valuxa.shop
+      paths:
+        - path: /
+          pathType: Prefix
+config:
+  allowedHosts:
+    - dashboard.valuxa.shop

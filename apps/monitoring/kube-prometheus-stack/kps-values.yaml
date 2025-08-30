@@ -1,0 +1,83 @@
+prometheusOperator:
+  namespaces:
+    releaseNamespace: false
+
+grafana:
+  initChownData:
+    enabled: false
+
+  podSecurityContext:
+    fsGroup: 472
+    runAsUser: 472
+    runAsGroup: 472
+    runAsNonRoot: true
+
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: "local-path"
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    finalizers:
+      - kubernetes.io/pvc-protection
+
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    hosts:
+      - grafana.valuxa.shop
+
+
+  grafana.ini:
+    server:
+      root_url: https://grafana.valuxa.shop
+    auth.generic_oauth:
+      enabled: true
+      client_id: ${GF_AUTH_GENERIC_OAUTH_CLIENT_ID}
+      client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
+      scopes: openid profile email groups
+      auth_url: https://auth.valuxa.shop/application/o/authorize/
+      token_url: https://auth.valuxa.shop/application/o/token/
+      api_url: https://auth.valuxa.shop/application/o/userinfo/
+      use_refresh_token: true
+      role_attribute_path: "contains(groups[*], 'grafana-admins') && 'Admin' || contains(groups[*], 'grafana-editors') && 'Editor' || 'Viewer'"
+
+  envFromSecret: grafana-oidc-secret
+
+  sidecar:
+    datasources:
+      enabled: true
+      url: http://monitoring-kube-prometheus-prometheus:9090
+
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    hosts:
+      - metrics.valuxa.shop
+
+  prometheusSpec:
+    replicas: 1
+    enableRemoteWriteReceiver: true
+    podMonitorNamespaceSelector:
+      matchLabels:
+        prometheus-scrape: "true"
+    podMonitorSelector: {}
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "local-path"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 15Gi

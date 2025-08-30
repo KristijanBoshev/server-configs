@@ -1,0 +1,103 @@
+auth_enabled: false
+
+loki:
+  auth_enabled: false
+
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
+
+  memberlist:
+    service:
+      publishNotReadyAddresses: true
+
+  limits_config:
+    retention_period: 7d
+
+  compactor:
+    retention_enabled: true
+    delete_request_store: s3
+
+  commonConfig:
+    replication_factor: 1
+  schemaConfig:
+    configs:
+      - from: "2024-04-01"
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+  pattern_ingester:
+      enabled: true
+  limits_config:
+    allow_structured_metadata: true
+    volume_enabled: true
+  ruler:
+    enable_api: true
+  storage:
+    type: s3
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
+    s3:
+      endpoint: "https://api.storage.valuxa.shop"
+      region: "us-east-1"
+      accessKeyId: "VMG0KtTB20GKnCNQPhmb"
+      secretAccessKey: "LRgUnx9ZXCP838IpeeOK4EASxbUZWwTbtEGOoAdf"
+      s3ForcePathStyle: true
+      insecure: false
+
+minio:
+  enabled: false
+
+deploymentMode: SingleBinary
+
+singleBinary:
+  replicas: 1
+
+# Zero out replica counts of other deployment modes
+backend:
+  replicas: 0
+read:
+  replicas: 0
+write:
+  replicas: 0
+
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+distributor:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
+  replicas: 0
+bloomCompactor:
+  replicas: 0
+bloomGateway:
+  replicas: 0
+
+gateway:
+  enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+      traefik.ingress.kubernetes.io/service.scheme: "http"
+    hosts:
+      - host: logs.valuxa.shop
+        paths:
+          - path: /
+            pathType: Prefix
+

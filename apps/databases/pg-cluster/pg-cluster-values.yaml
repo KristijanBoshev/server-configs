@@ -1,0 +1,22 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: app-db
+  namespace: default
+spec:
+  instances: 1   # single node (can scale later)
+  imageName: ghcr.io/cloudnative-pg/postgresql:15
+
+  storage:
+    size: 20Gi
+    storageClass: local-path
+
+  bootstrap:
+    initdb:
+      database: appdb
+      owner: appuser
+      secret:
+        name: app-db-secret
+
+  monitoring:
+    enablePodMonitor: true

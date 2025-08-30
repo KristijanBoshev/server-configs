@@ -1,0 +1,36 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    # Use additionalArguments for the resolver for maximum reliability
+    additionalArguments:
+      - "--certificatesresolvers.letsencrypt.acme.email=boshevk@gmail.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+
+    # Keep the structured YAML for entrypoints and redirection
+    entryPoints:
+      web:
+        address: ":80"
+        http:
+          redirections:
+            entryPoint:
+              to: "websecure"
+              scheme: "https"
+      websecure:
+        address: ":443"
+
+    # Keep persistence enabled to save your certificates
+    persistence:
+      enabled: true
+      storageClass: local-path
+      path: /data
+
+    # Keep access logs enabled
+    logs:
+      access:
+        enabled: true
