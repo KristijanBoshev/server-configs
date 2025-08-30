@@ -8,7 +8,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://argoproj.github.io/argo-helm
+    repoURL: https://github.com/KristijanBoshev/server-configs.git
+    path: apps/security/argo
     chart: argo-cd
     targetRevision: 8.3.1
     helm:
