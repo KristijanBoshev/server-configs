@@ -11,6 +11,7 @@ spec:
     - repoURL: https://github.com/KristijanBoshev/server-configs.git
       targetRevision: main
       ref: values
+      path: ""
     - repoURL: https://argoproj.github.io/argo-helm
       chart: argo-cd
       targetRevision: 8.3.1
