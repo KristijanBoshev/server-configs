@@ -17,7 +17,7 @@ spec:
       targetRevision: 2025.8.1
       helm:
         valueFiles:
-          - $values/apps/security/argo/values.yaml
+          - $values/apps/security/authentik/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
