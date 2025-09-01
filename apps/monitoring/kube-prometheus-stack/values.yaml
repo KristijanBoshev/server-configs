@@ -2,6 +2,12 @@ prometheusOperator:
   namespaces:
     releaseNamespace: false
 
+prometheus-node-exporter:
+  hostNetwork: false
+  hostPID: false
+  service:
+    hostPort: false
+
 grafana:
   initChownData:
     enabled: false
