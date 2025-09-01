@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/KristijanBoshev/server-configs.git
+      targetRevision: main
+      ref: values
+      path: ""
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: loki
+      targetRevision: 6.37.0
+      helm:
+        valueFiles:
+          - $values/apps/security/authentik/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
