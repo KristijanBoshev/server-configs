@@ -17,7 +17,7 @@ spec:
       targetRevision: 6.37.0
       helm:
         valueFiles:
-          - $values/apps/security/authentik/values.yaml
+          - $values/apps/logging/loki/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
