@@ -17,7 +17,7 @@ spec:
       targetRevision: 4.1.4
       helm:
         valueFiles:
-          - $values/apps/homepage/values.yaml
+          - $values/apps/infrastructure/homepage/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
