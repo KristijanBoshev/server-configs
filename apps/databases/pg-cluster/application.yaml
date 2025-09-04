@@ -10,7 +10,8 @@ spec:
   sources:
     - repoURL: https://github.com/KristijanBoshev/server-configs.git
       targetRevision: main
-      path: apps/databases/pg-cluster
+      ref: values
+      path: ""
     - repoURL: https://cloudnative-pg.github.io/charts
       chart: cloudnative-pg
       targetRevision: 0.26.0  # matches your installed chart version
