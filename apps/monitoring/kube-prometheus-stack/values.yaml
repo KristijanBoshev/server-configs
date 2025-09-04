@@ -72,6 +72,13 @@ prometheus:
       - metrics.valuxa.shop
 
   prometheusSpec:
+    resources:
+      limits:
+        memory: 4Gi
+        cpu: 2000m
+      requests:
+        memory: 2Gi
+        cpu: 1000m
     replicas: 1
     enableRemoteWriteReceiver: true
     podMonitorNamespaceSelector:

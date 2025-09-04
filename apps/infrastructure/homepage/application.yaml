@@ -12,7 +12,7 @@ spec:
       targetRevision: main
       ref: values
       path: ""
-    - repoURL: oci://ghcr.io/m0nsterrr/helm-charts
+    - repoURL: oci://ghcr.io/m0nsterrr/helm-charts/homepage
       chart: homepage
       targetRevision: 4.1.4
       helm:
