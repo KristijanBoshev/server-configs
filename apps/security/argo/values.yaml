@@ -14,3 +14,26 @@ server:
 configs:
   params:
     server.insecure: true
+  secret:
+    extra:
+      dex.authentik.clientSecret: "ZEJnY0tjMlFBN0pPZ2Z0ZElRUDBOUWR2djFjd1ZEQ3I0ckpuYWZWdVlBNmdaZEZhcjJNTmtCSzZmVmtydHBPZ2lneFJ0TUhXdkExaUJ0VDNtY3VZOHRFYnFhSGU2aFZiNjNtNWNZdVZEU2Q5MDRLQjJkb2ZhR1JmdU01R3NTOHc="
+  cm:
+    url: https://argo.valuxa.shop
+    dex.config: |
+      connectors:
+      - config:
+          issuer: https://auth.valuxa.shop/application/o/argocd/
+          clientID: NpH2HnO5FJv5Pa1xdlkDbPT51Md0xVhwtLe5NMh7
+          clientSecret: $dex.authentik.clientSecret
+          insecureEnableGroups: true
+          scopes:
+            - openid
+            - profile
+            - email
+        name: authentik
+        type: oidc
+        id: authentik
+
+  rbac:
+    policy.csv: |
+      g, ArgoCD Admins, role:admin
